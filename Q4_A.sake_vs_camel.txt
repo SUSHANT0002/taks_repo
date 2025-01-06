@@ -1,0 +1,13 @@
+Snake Case vs. Camel Case
+Task: Convert this JSON object from snake_case to camelCase and write a function in JavaScript to automate the transformation:
+
+{
+    "first_name": "John",
+    "last_name": "Doe",
+    "email_address": "john.doe@example.com"
+}
+
+
+solution:
+
+

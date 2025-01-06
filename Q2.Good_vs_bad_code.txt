@@ -1,0 +1,22 @@
+Q2.Good Code vs. Bad Code
+
+Task: Refactor the following code snippet to improve readability and maintainability:
+
+def process(d):
+    if d['status'] == 'active':
+        print('Active')
+    elif d['status'] == 'inactive':
+        print('Inactive')
+    else:
+        print('Unknown')
+
+
+Solution:-
+
+def process(process_id):
+	if process_id["status"]=="active":
+		print('Active')
+	elif process_id['status']=='inactive':
+		print('Inactive')
+	else:
+		print('Unknown')

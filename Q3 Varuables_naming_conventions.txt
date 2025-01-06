@@ -1,0 +1,35 @@
+
+Variables and Naming Conventions
+A.Task: You are given the following code snippet written with poor naming conventions. Refactor the code to make it more readable, maintainable, and follow proper naming conventions.
+
+def fnc1(a, b):
+    r = a * b
+    x = r + b
+    return x
+
+def calc(a, b):
+    c = a + b
+    res = fnc1(a, b)
+    return c, res
+
+Solution:
+
+def calculationFunction(num1,num2):	
+    munltiplication = num1 * num2 	# here we will multiply both num1 and num2 and store the result in multiplication variable
+    sum = multiplication + num2 	# here we will add multiplication variable and num2 and store the result in sum variable	
+    return sum 				# this function will return the sum variable
+
+def calculation(num1,num2):
+    sum = num1 + num2				#here we will add num1 and num2 and store the result in sum variable
+    result = calculationFunction(num1, num2)	#here we will store the reult of calculationFuntion(num1,num2) in result variable
+    return sum, result				#at last we will return sum and result variable
+
+
+
+
+B.Instructions:
+
+i.Rename variables and the function to meaningful names that reflect their purpose.
+ii.Add comments (if necessary) to improve code readability.
+iii.Ensure your refactored code follows camelCase or snake_case conventions, based on your preferred language or project style.
+
