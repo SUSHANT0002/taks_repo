@@ -1,0 +1,231 @@
+Tasks:
+
+Q1. Database design and Q2.implented constraints
+
+
+-- Customers Table
+CREATE TABLE Customers (
+    customer_id INT PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    phone_number VARCHAR(15),
+    address VARCHAR(255)
+);
+
+-- Categories Table
+CREATE TABLE Categories (
+    category_id INT PRIMARY KEY AUTO_INCREMENT,
+    category_name VARCHAR(50) NOT NULL
+);
+
+-- Products Table
+CREATE TABLE Products (
+    product_id INT PRIMARY KEY AUTO_INCREMENT,
+    product_name VARCHAR(100) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2) NOT NULL CHECK (price > 0),
+    stock INT NOT NULL CHECK (stock >= 0),
+    category_id INT,
+    FOREIGN KEY (category_id) REFERENCES Categories(category_id)
+);
+
+-- Orders Table
+CREATE TABLE Orders (
+    order_id INT PRIMARY KEY AUTO_INCREMENT,
+    customer_id INT,
+    order_date DATE NOT NULL,
+    total_amount DECIMAL(10, 2),
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
+);
+
+-- Order_Items Table
+CREATE TABLE Order_Items (
+    order_item_id INT PRIMARY KEY AUTO_INCREMENT,
+    order_id INT,
+    product_id INT,
+    quantity INT NOT NULL CHECK (quantity > 0),
+    price DECIMAL(10, 2),
+    FOREIGN KEY (order_id) REFERENCES Orders(order_id),
+    FOREIGN KEY (product_id) REFERENCES Products(product_id)
+);
+
+
+
+Q3. Data Population 
+
+-- Insert Categories
+INSERT INTO Categories (category_name) VALUES
+('Laptops'),
+('Smartphones'),
+('Headphones'),
+('Tablets'),
+('Accessories');
+
+-- Insert Products
+INSERT INTO Products (product_name, description, price, stock, category_id) VALUES
+('Laptop 1', '14-inch laptop with 8GB RAM', 1000.00, 20, 1),
+('Laptop 2', '15-inch laptop with 16GB RAM', 1500.00, 30, 1),
+('Smartphone 1', '6-inch smartphone with 128GB storage', 800.00, 50, 2),
+('Smartphone 2', '5-inch smartphone with 64GB storage', 600.00, 40, 2),
+('Headphone 1', 'Wireless headphones with noise cancellation', 200.00, 100, 3),
+('Headphone 2', 'Wired headphones with great sound', 100.00, 80, 3),
+('Tablet 1', '10-inch tablet with stylus', 400.00, 25, 4),
+('Tablet 2', '8-inch tablet with 32GB storage', 250.00, 60, 4),
+('Accessory 1', 'Laptop sleeve', 20.00, 200, 5),
+('Accessory 2', 'Wireless mouse', 15.00, 150, 5);
+
+-- Insert Customers
+INSERT INTO Customers (first_name, last_name, email, phone_number, address) VALUES
+('John', 'Doe', 'johndoe@example.com', '1234567890', '1234 Elm St, Springfield'),
+('Jane', 'Smith', 'janesmith@example.com', '2345678901', '5678 Oak St, Springfield'),
+('Emily', 'Jones', 'emilyjones@example.com', '3456789012', '9101 Maple St, Springfield'),
+('Chris', 'Brown', 'chrisbrown@example.com', '4567890123', '1234 Pine St, Springfield'),
+('Michael', 'Taylor', 'michaeltaylor@example.com', '5678901234', '2345 Birch St, Springfield'),
+('Sarah', 'Williams', 'sarahwilliams@example.com', '6789012345', '3456 Cedar St, Springfield'),
+('David', 'Davis', 'daviddavis@example.com', '7890123456', '4567 Redwood St, Springfield'),
+('Anna', 'Wilson', 'annawilson@example.com', '8901234567', '5678 Sequoia St, Springfield');
+
+-- Insert Orders
+INSERT INTO Orders (customer_id, order_date, total_amount) VALUES
+(1, '2025-01-01', 3000.00),
+(2, '2025-01-02', 1200.00),
+(3, '2025-01-03', 800.00),
+(4, '2025-01-04', 2000.00),
+(5, '2025-01-05', 1500.00),
+(6, '2025-01-06', 200.00),
+(7, '2025-01-07', 1300.00),
+(8, '2025-01-08', 1500.00),
+(1, '2025-01-09', 1000.00),
+(2, '2025-01-10', 1500.00),
+(3, '2025-01-11', 500.00),
+(4, '2025-01-12', 2500.00);
+
+-- Insert Order Items
+INSERT INTO Order_Items (order_id, product_id, quantity, price) VALUES
+(1, 1, 2, 1000.00),
+(1, 2, 1, 1500.00),
+(2, 3, 1, 800.00),
+(3, 4, 1, 600.00),
+(4, 5, 2, 200.00),
+(5, 6, 1, 100.00),
+(6, 7, 1, 250.00),
+(7, 8, 2, 400.00),
+(8, 9, 3, 20.00),
+(9, 10, 1, 15.00),
+(10, 1, 1, 1000.00),
+(11, 2, 1, 1500.00);
+
+
+4. Write Queries
+
+1. Find top 3 customers by order value
+
+SELECT c.first_name, c.last_name, SUM(o.total_amount) AS total_order_value
+FROM Orders o
+JOIN Customers c ON o.customer_id = c.customer_id
+GROUP BY c.customer_id
+ORDER BY total_order_value DESC
+LIMIT 3;
+
+
+2.List products with low stock (below 10)
+
+SELECT product_name, stock
+FROM Products
+WHERE stock < 10;
+
+3: Calculate revenue by category
+SELECT cat.category_name, SUM(oi.quantity * oi.price) AS revenue
+FROM Order_Items oi
+JOIN Products p ON oi.product_id = p.product_id
+JOIN Categories cat ON p.category_id = cat.category_id
+GROUP BY cat.category_name;
+
+4.Show orders with their items and total amount
+SELECT o.order_id, o.order_date, c.first_name, c.last_name, 
+       p.product_name, oi.quantity, oi.price, 
+       (oi.quantity * oi.price) AS total_item_amount
+FROM Orders o
+JOIN Customers c ON o.customer_id = c.customer_id
+JOIN Order_Items oi ON o.order_id = oi.order_id
+JOIN Products p ON oi.product_id = p.product_id;
+
+
+
+Q5 .Advanced Tasks
+
+I.Write a query to create a view named 'order_summary' that shows:
+Each order's ID
+Customer's full name (concatenated first and last name)
+Number of unique products in the order
+Total quantity of items
+Total order amount (calculated using quantity × price)
+Order date
+The view should join the orders, customers, order_items, and products tables together and group results by order.
+
+
+ CREATE VIEW order_summary AS
+SELECT o.order_id,
+       CONCAT(c.first_name, ' ', c.last_name) AS customer_full_name,
+       COUNT(DISTINCT oi.product_id) AS unique_products,
+       SUM(oi.quantity) AS total_quantity,
+       SUM(oi.quantity * oi.price) AS total_order_amount,
+       o.order_date
+FROM Orders o
+JOIN Customers c ON o.customer_id = c.customer_id
+JOIN Order_Items oi ON o.order_id = oi.order_id
+JOIN Products p ON oi.product_id = p.product_id
+GROUP BY o.order_id;
+
+
+
+II.Write a stored procedure to update stock levels
+
+
+CREATE PROCEDURE update_stock_levels(IN order_id INT)
+BEGIN
+    DECLARE done INT DEFAULT 0;
+    DECLARE prod_id INT;
+    DECLARE prod_qty INT;
+    DECLARE stock_cursor CURSOR FOR 
+        SELECT oi.product_id, oi.quantity
+        FROM Order_Items oi
+        WHERE oi.order_id = order_id;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+    OPEN stock_cursor;
+
+    read_loop: LOOP
+        FETCH stock_cursor INTO prod_id, prod_qty;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+        UPDATE Products
+        SET stock = stock - prod_qty
+        WHERE product_id = prod_id;
+    END LOOP;
+
+    CLOSE stock_cursor;
+END;
+
+
+III.Create triggers to call the stored procedure on insertion of new order_item and deletion of an order_item
+
+
+-- Trigger for Order Items Insert
+CREATE TRIGGER update_stock_after_order_insert
+AFTER INSERT ON Order_Items
+FOR EACH ROW
+BEGIN
+    CALL update_stock_levels(NEW.order_id);
+END;
+
+-- Trigger for Order Items Delete
+CREATE TRIGGER update_stock_after_order_delete
+AFTER DELETE ON Order_Items
+FOR EACH ROW
+BEGIN
+    CALL update_stock_levels(OLD.order_id);
+END;
+
