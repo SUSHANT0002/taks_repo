@@ -1,0 +1,20 @@
+# test_services.py
+import unittest
+from Services import calculate_discount
+
+class TestCalculateDiscount(unittest.TestCase):
+    def test_calculate_discount(self):
+        # Test that calculates 10% discount on 100
+        self.assertEqual(calculate_discount(100, 10), 10)  # 10% of 100 is 10
+
+        # Test that calculates 15% discount on 200
+        self.assertEqual(calculate_discount(200, 15), 30)  # 15% of 200 is 30
+
+        # Test edge case where price is 0
+        self.assertEqual(calculate_discount(0, 50), 0)     # 50% of 0 is 0
+
+        # Test edge case where discount percentage is 0
+        self.assertEqual(calculate_discount(100, 0), 0)    # 0% of 100 is 0
+
+        # Test large price and discount
+        self.assertEqual(calculate_discount(1000, 50), 500) # 50% of 1000 is 500

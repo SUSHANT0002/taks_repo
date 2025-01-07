@@ -10,4 +10,21 @@ Task: Convert this JSON object from snake_case to camelCase and write a function
 
 solution:
 
+function toCamelCase(obj){
+const result={}
+for(const key in obj){
+const camelCase=key.replace(/_[(a-z)]/g,(match,letter)=>letter.toUpperCase())
+result[camelCase]=obj[key];
+}
+return result;
+}
+
+const Snake={
+"first_name":"John",
+"last_name":"Doe",
+"e_mail":"johndoe@gmail.com"
+}
+
+const ans=toCamelCase(Snake)
+
 

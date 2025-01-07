@@ -1,0 +1,30 @@
+1.first we have initialized the git repository in our local machine using 
+"git init"
+
+2.Then I created some files in my work space directory using
+"mkdir Assignment_1"
+
+3.then I created a remote repo on the github where we need to push the changes
+
+4.then in work space I completed my tasks and added it to the stagging area using 
+"git add ." 
+here  "." is reffered as all the files
+
+5.then from stagging area  commited those changes to the local space using 
+"git commit -m "initial commit"
+here a flag is used "-m" that enables us to write the message in the command
+
+6.then we have to connect the local with the remote using
+"git remote add origin https://github.com/SUSHANT0002/Assignment_1.git"
+
+7.then I switched to the main branch and pushed my changes to the remote repo
+"git branch -M main"
+"git push -u origin main"
+
+8.then I created a new branch "feature" using 
+"git checkout -b feature"
+
+9. Now I have created a new file index.txt and will push it on the feature branch using
+"git push -u origin feature"
+
+
